@@ -1,6 +1,6 @@
 resource "aws_elb" "web" {
   
-  name = "vgordey-elb"
+  name = "${var.short_name}-elb"
   # The same availability zone as our instance
 ##  availability_zones = ["${aws_instance.web.*.availability_zone}"]
   security_groups    = ["${var.sec_group}"]
