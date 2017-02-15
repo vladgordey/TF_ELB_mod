@@ -28,7 +28,6 @@ resource "aws_elb" "web" {
   idle_timeout                = 400
   connection_draining         = true
   connection_draining_timeout = 400
-}
 
 resource "aws_lb_cookie_stickiness_policy" "default" {
   name                     = "lbpolicy"
