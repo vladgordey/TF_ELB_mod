@@ -35,5 +35,6 @@ resource "aws_lb_cookie_stickiness_policy" "default" {
   lb_port                  = 80
   cookie_expiration_period = 600
 }
+}
 
 
