@@ -1,39 +1,31 @@
-//
-// Module: tf_aws_elb/elb_http
-//
-
-// Provider specific configs
 provider "aws" {
-    access_key = "${var.aws_access_key}"
-    secret_key = "${var.aws_secret_key}"
-    region = "${var.aws_region}"
 }
 
-// ELB Resource for Module
-// A note about instances:
-// - This module assumes your instances will be made
-//   by an ASG and the ASG will associate them with
-//   the ELB.
-resource "aws_elb" "elb" {
-  name = "${var.elb_name}"
-  subnets = ["${var.subnet_az1}","${var.subnet_az2}"]
-  internal = "${var.elb_is_internal}"
-  security_groups = ["${var.elb_security_group}"]
-
+resource "aws_elb" "web" {
+  
+  name = "${var.short_name}-elb"
+  # The same availability zone as our instance
+##  availability_zones = ["${aws_instance.web.*.availability_zone}"]
+  security_groups    = ["${var.sec_group}"]
+  subnets         = ["${var.subnets"]
+##  subnets         = "${element(aws_subnet.main.*.id, count.index)}"  
   listener {
-    instance_port = "${var.backend_port}"
-    instance_protocol = "${var.backend_protocol}"
-    lb_port = 80
-    lb_protocol = "http"
+    instance_port     = 80
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
   }
 
   health_check {
-    healthy_threshold = 2
+    healthy_threshold   = 2
     unhealthy_threshold = 2
-    timeout = 3
-    target = "${var.health_check_target}"
-    interval = 30
+    timeout             = 3
+    target              = "HTTP:80/"
+    interval            = 30
   }
 
-  cross_zone_load_balancing = true
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
 }
