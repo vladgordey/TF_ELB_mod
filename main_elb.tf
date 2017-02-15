@@ -7,7 +7,7 @@ resource "aws_elb" "web" {
   # The same availability zone as our instance
 ##  availability_zones = ["${aws_instance.web.*.availability_zone}"]
   security_groups    = ["${var.sec_group}"]
-  subnets         = ["${var.subnets"]
+  subnets         = ["${var.subnets}"]
 ##  subnets         = "${element(aws_subnet.main.*.id, count.index)}"  
   listener {
     instance_port     = 80
